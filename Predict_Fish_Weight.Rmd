@@ -67,12 +67,38 @@ summary.out$which[2,]
 The summary shows that the best two variables to use is Height and Width.
 
 ```{r}
+Bream <- filter(Fishdata,Species == "Bream")
+Bream <- select(Bream,-1)
+``` 
 
+```{r}
+library(leaps)
+regsubsets.out <-
+    regsubsets(Weight ~ .,
+               data = Bream,
+               nbest = 1,       # 1 best model for each number of predictors
+               nvmax = NULL,    # NULL for no limit on number of variables
+               force.in = NULL, force.out = NULL,
+               method = "exhaustive")
+
+summary.out <- summary(regsubsets.out)
+as.data.frame(summary.out$outmat)
+library(car)
+subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2")
 ```
 
+The best two variables to use is W
 
 
+```{r}
+which.max(summary.out$adjr2)
+```
+
+The best model is model 3.
 
 
+```{r}
+summary.out$which[2,]
+```
 
-
+The summary shows that the best variables to use is Length 2 and Height.
