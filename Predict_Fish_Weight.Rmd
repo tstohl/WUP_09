@@ -25,14 +25,16 @@ Fishdata <- read.csv(file = "Fish.csv")
 ## Build the best regression model you can that predicts the weight of perch, Bream, and Smelt.
 ## Using only two predictor variables
 
-First the data needed to be read opened from the csv file. The appropriate r command was used to achive this and was title Fishdata. Fishdata includes 6 variables total. These variables are Weight, Lenghth1, Lenghth2, Lenghth3, Height, and Weight. This project is trying to find out what two variables best describe weight in 3 species of fish. Perch, Bream, and Smelt are the three species.
+First the data needed to be read opened from the csv file. The appropriate r command was used to achieve this and was title Fishdata. Fishdata includes 6 variables total. These variables are Weight, Length1, Lenghth2, Lenghth3, Height, and Weight. This project is trying to find out what two variables best describe weight in 3 species of fish. Perch, Bream, and Smelt are the three species.
 Fishdata also includes the character variable species and that needs to be removed to effectively read the data. Appropriate R commands are used to extract the numerical variables from the character variable "species" for each  of the three types of fish. 
 
 
 
 # Perch
 
-## Results
+## Methods
+
+## Inferential
 
 ```{r}
 Perchdata =filter(Fishdata, Species =="Perch")
@@ -59,6 +61,7 @@ library(car)
 subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2")
 ```
 
+## Which one is best?
 
 This model includes 5 regression models that have varying variables in each and explain the perch fish weight. The numbers of variables in each model range from 1 to 5 and the most effective model will be seen at the top, while the lowest will be seen at the bottom. 
 
@@ -79,21 +82,28 @@ The best model of all of them is model 2. The best model that has two regressors
 ```{r}
 summary.out$which[3,]
 ```
-
-This summary clarifies what regressors to use to make the most effective model that displays fish weight. These two variables that have TRUE next to them are the ones that are included and they are Heighth and Width; just as illustrated in the model. 
-
 ```{r}
 best.model <- lm(Weight~Height+Width, data=Perchdata)
 fullup <- lm(Weight~.,data=Perchdata)
 summary(best.model)
 ```
 
+Just as the graph above displays, the adjusted R-squared is 0.94 on the dot. This is the best model is the best with two regressors and it is also the best model with any number of regressors. 
+
+The p-value is 2.2e-16 which is essentially 0. This number says that the model with two variables is a better fit than the model using all the variables. This model is an excellent fit as these numbers could not occur by chance.
+
 ```{r}
 anova(fullup,best.model)
 ```
+
+The p-value is too large to accept and so the null hypothesis is accepted. There is no real difference between the model that uses everything and the model that only uses height and width. 
+
+
 # Bream
 
-## Results
+## Methods
+
+## Inferential
 
 
 ```{r}
@@ -121,7 +131,9 @@ library(car)
 subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2")
 ```
 
-For the model dedicated to the Bream species of fish, The best two regressors to use are Length 2 and Height. This model differentiates from the model for the perch species because the best model possible in this model is actually Lenghth1, Heighth, and Width. This problem wants to what what model with two regressors is the best and that is model 2 that has Lenghth 2 and Height. Approximating with what can be seen in this model The adjusted R- squared for model 2 looks to be about 0.93.
+## Which is the best?
+
+For the model dedicated to the Bream species of fish, The best two regressors to use are Length 2 and Height. This model differentiates from the model for the perch species because the best model possible in this model is actually Lenghth1, Height, and Width. This problem wants to what what model with two regressors is the best and that is model 2 that has Lenghth 2 and Height. Approximating with what can be seen in this model The adjusted R- squared for model 2 looks to be about 0.93.
 
 
 
@@ -131,30 +143,42 @@ For the model dedicated to the Bream species of fish, The best two regressors to
 which.max(summary.out$adjr2)
 ```
 
-The best model is model 3. However, the best model that only includes two regressors to explain the fish's wight is model 2. These variable are Length 2 and Height. 
+The best model is model 3 and uses L1, H, and W. However, the best model that only includes two regressors to explain the fish's wight is model 2. These variable are Length 2 and Height. 
 
 
 ```{r}
-summary.out$which[2,]
+summary.out$which[3,]
 ```
-
-This summary clarifies which variables are included in the best model for onlt 2 regressors. These variables are clearly Lenghth 2 and Heighth. 
-
 ```{r}
 best.model <- lm(Weight~Length2+Height ,data=Breamdata)
 fullup <- lm(Weight~.,data=Breamdata)
 summary(best.model)
 ```
 
+Just as the graph above displays, the adjusted R-squared is 0.93. This is the best model  with two regressors.
+
+The p-value is 2.2e-16 which is essentially 0. This number says that the model with two variables is a better fit than the model using all the variables. This model is an excellent fit as these numbers could not occur by chance.
+
+
+
+
+
 ```{r}
 anova(fullup,best.model)
 ```
+
+The p-value is too large to determine that there is a difference in using the  best model and the model that uses only 2 regressors. The alternative is rejected. 
+
+
+cannot use annova. The models are not nested.
 
 
 # Smelt
 
 
-## Results
+## Methods
+
+## Inferential
 
 ```{r}
 Smeltdata =filter(Fishdata, Species =="Smelt")
@@ -181,7 +205,10 @@ library(car)
 subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2")
 ```
 
-This model is dedicated to the data for the species of fish called Smelt. The best two element regression model to describe weight is Lenghth 2 and Width. The best model possible for Smelt, however, is a 4 variable model and includes Lenghth1, Length2, Height, and Width. The adjusted R-squared for the two variable model looks to be about 0.96 and some change. 
+
+## Which is best?
+
+This model is dedicated to the data for the species of fish called Smelt. The best two element regression model to describe weight is Length 2 and Width. The best model possible for Smelt, however, is a 4 variable model and includes Length1, Length2, Height, and Width. The adjusted R-squared for the two variable model looks to be about 0.96 and some change. 
 
 
 
@@ -194,20 +221,26 @@ The best model possible for explaining smelt weight is model 4. The best model w
 
 
 ```{r}
-summary.out$which[2,]
+summary.out$which[4,]
 ```
-
-This is a summary that clarifies what two variables make up the best model with only 2 regressors. As seen, Length2 and Width are the best pick.
-
-
 ```{r}
 best.model <- lm(Weight~Length2+Width ,data=Smeltdata)
 fullup <- lm(Weight~.,data=Smeltdata)
 summary(best.model)
 ```
+The p-value is so small that these results are unlikely to occur by chance. The null is accepted that a two variable model isn't any better than a model with all data.
+
+
+
+
+```{r}
+anova(fullup,best.model)
+```
+
+The p-value is  essentially too large to say the best model and the model with two regressors is any different than using  the model that includes all the data. The the null is accepted that there isn't any difference. 
 
 
 # Discussion and Conclusion
 
-
+Based on the automated selection of variables there is no real difference in using a model with two variables versus using a model with all of the variables. This was identifies through a graphical depiction of the adjusted R-squared as well as using the p-values to clarify. Comparing the models that only used two variables and the models that used all data, it was clear that there was no real difference in effectively determining fish weight. The null hypothesis is accepted, there are no models that use 2 variables that are any better in efficiency in determining fish weight. There is not difference in using model with two variables versus using models with fullup variables. 
 
