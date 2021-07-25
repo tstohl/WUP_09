@@ -1,13 +1,14 @@
 ---
 title: "Weight of Fish"
-author: "Taylor Stohl"
-date: "Summer 2021"
-output:
-   html_document:
-         toc: true
-         toc_depth: 5
-        
+author: "Your Name"
+date: "Year 2020"
+output: 
+  html_document:
+    number_sections: true
+    toc: true
 ---
+
+
 
 
 ```{r include=FALSE,echo=FALSE}
@@ -21,31 +22,39 @@ Fishdata <- read.csv(file = "Fish.csv")
 
 <!--In this section you explain what you are trying to show.  Where did the data come from?  What is the research or other question you are trying to answer?!-->
 
-#Build the best regression model you can that predicts the weight of perch, Bream, and Smelt.
-#Using only two predictor variables
-
-
-# Methods
+## Build the best regression model you can that predicts the weight of perch, Bream, and Smelt.
+## Using only two predictor variables
 
 First the data needed to be read opened from the csv file. The appropriate r command was used to achive this and was title Fishdata. Fishdata includes 6 variables total. These variables are Weight, Lenghth1, Lenghth2, Lenghth3, Height, and Weight. This project is trying to find out what two variables best describe weight in 3 species of fish. Perch, Bream, and Smelt are the three species.
 Fishdata also includes the character variable species and that needs to be removed to effectively read the data. Appropriate R commands are used to extract the numerical variables from the character variable "species" for each  of the three types of fish. 
 
+## Methods
+
+<!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method.!-->
+
+## Results
+
+<!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
+
+
 # Perch
 
 ```{r}
-perch <- filter(Fishdata,Species == "Perch")
-perch <- select(perch,-1)
+Perchdata =filter(Fishdata, Species =="Perch")
+ Perchdata = subset (Perchdata, select = -Species)
 ``` 
 
 This R command breaks perch apart from Fishdata and creates another subset. There are 56 observations of perch and 6 variables. These are the same previous variables.
 
-## Model
+### Graphical Descriptive Results
+
+<!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 ```{r}
 library(leaps)
 regsubsets.out <-
     regsubsets(Weight ~ .,
-               data = perch,
+               data = Perchdata,
                nbest = 1,       # 1 best model for each number of predictors
                nvmax = NULL,    # NULL for no limit on number of variables
                force.in = NULL, force.out = NULL,
@@ -64,7 +73,7 @@ The two best elemental regression models to explain what the fish's weight is ap
 
 The best model with two regressors is model 2, as is illustated in this plot. 
 
-## Summaries
+
 
 ```{r}
 which.max(summary.out$adjr2)
@@ -75,28 +84,38 @@ The best model of all of them is model 2. The best model that has two regressors
 
 
 ```{r}
-summary.out$which[2,]
+summary.out$which[3,]
 ```
 
-This summary clarifies what regressors to use to make the most effective model that displays fish weight. These two variables that have TRUE next to them are the ones that are included and they are Heighth and Width; just as illustated in the model. 
+This summary clarifies what regressors to use to make the most effective model that displays fish weight. These two variables that have TRUE next to them are the ones that are included and they are Heighth and Width; just as illustrated in the model. 
 
+```{r}
+best.model <- lm(Weight~Height+Width, data=Perchdata)
+summary(best.model)
+```
+
+```{r}
+anova(fullup,best.model)
+```
 # Bream
 
 
 ```{r}
-Bream <- filter(Fishdata,Species == "Bream")
-Bream <- select(Bream,-1)
+Breamdata =filter(Fishdata, Species =="Bream")
+ Breamdata = subset (Breamdata, select = -Species)
 ``` 
 
 This R command breaks Bream apart from Fishdata and creates another subset. There are 35 observations of Bream and 6 variables. These are the same previous variables.
 
-## Model
+### Graphical Descriptive Results
+
+<!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 ```{r}
 library(leaps)
 regsubsets.out <-
     regsubsets(Weight ~ .,
-               data = Bream,
+               data = Breamdata,
                nbest = 1,       # 1 best model for each number of predictors
                nvmax = NULL,    # NULL for no limit on number of variables
                force.in = NULL, force.out = NULL,
@@ -111,7 +130,7 @@ subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2
 For the model dedicated to the Bream species of fish, The best two regressors to use are Length 2 and Height. This model differentiates from the model for the perch species because the best model possible in this model is actually Lenghth1, Heighth, and Width. This problem wants to what what model with two regressors is the best and that is model 2 that has Lenghth 2 and Height. Approximating with what can be seen in this model The adjusted R- squared for model 2 looks to be about 0.93.
 
 
-## Summaries
+
 
 
 ```{r}
@@ -127,22 +146,45 @@ summary.out$which[2,]
 
 This summary clarifies which variables are included in the best model for onlt 2 regressors. These variables are clearly Lenghth 2 and Heighth. 
 
-# Smelt
+```{r}
+best.model <- lm(Weight~Length2+Height ,data=Breamdata)
+summary(best.model)
+```
 
 ```{r}
-Smelt <- filter(Fishdata,Species == "Smelt")
-Smelt <- select(Smelt,-1)
+anova(fullup,best.model)
+```
+
+
+# Smelt
+
+
+## Methods
+
+<!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method.!-->
+
+#Results
+
+<!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
+
+
+
+```{r}
+Smeltdata =filter(Fishdata, Species =="Smelt")
+ Smeltdata = subset (Smeltdata, select = -Species)
 ``` 
 
 This R command breaks Smelt apart from Fishdata and creates another subset. There are only 14 observations of Bream and 6 variables. These are the same previous variables.
 
-## Model 
+### Graphical Descriptive Results
+
+<!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 ```{r}
 library(leaps)
 regsubsets.out <-
     regsubsets(Weight ~ .,
-               data = Smelt,
+               data = Smeltdata,
                nbest = 1,       # 1 best model for each number of predictors
                nvmax = NULL,    # NULL for no limit on number of variables
                force.in = NULL, force.out = NULL,
@@ -156,7 +198,7 @@ subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2
 
 This model is dedicated to the data for the species of fish called Smelt. The best two element regression model to describe weight is Lenghth 2 and Width. The best model possible for Smelt, however, is a 4 variable model and includes Lenghth1, Length2, Height, and Width. The adjusted R-squared for the two variable model looks to be about 0.96 and some change. 
 
-## Summaries
+
 
 
 ```{r}
@@ -171,4 +213,39 @@ summary.out$which[2,]
 ```
 
 This is a summary that clarifies what two variables make up the best model with only 2 regressors. As seen, Length2 and Width are the best pick.
+
+
+```{r}
+best.model <- lm(Weight~Length2+Width ,data=Smeltdata)
+summary(best.model)
+```
+## Methods
+
+<!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method.!-->
+
+#Results
+
+<!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
+
+## Descriptive Results
+
+### Graphical Descriptive Results
+
+<!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
+
+### Numerical Descriptive Results
+
+<!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
+
+## Inferential Results
+
+<!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
+
+
+# Discussion and Conclusion
+
+<!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
+
+
+
 
