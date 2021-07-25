@@ -28,16 +28,11 @@ Fishdata <- read.csv(file = "Fish.csv")
 First the data needed to be read opened from the csv file. The appropriate r command was used to achive this and was title Fishdata. Fishdata includes 6 variables total. These variables are Weight, Lenghth1, Lenghth2, Lenghth3, Height, and Weight. This project is trying to find out what two variables best describe weight in 3 species of fish. Perch, Bream, and Smelt are the three species.
 Fishdata also includes the character variable species and that needs to be removed to effectively read the data. Appropriate R commands are used to extract the numerical variables from the character variable "species" for each  of the three types of fish. 
 
-## Methods
-
-<!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method.!-->
-
-## Results
-
-<!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
 
 
 # Perch
+
+## Results
 
 ```{r}
 Perchdata =filter(Fishdata, Species =="Perch")
@@ -46,9 +41,7 @@ Perchdata =filter(Fishdata, Species =="Perch")
 
 This R command breaks perch apart from Fishdata and creates another subset. There are 56 observations of perch and 6 variables. These are the same previous variables.
 
-### Graphical Descriptive Results
 
-<!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 ```{r}
 library(leaps)
@@ -91,6 +84,7 @@ This summary clarifies what regressors to use to make the most effective model t
 
 ```{r}
 best.model <- lm(Weight~Height+Width, data=Perchdata)
+fullup <- lm(Weight~.,data=Perchdata)
 summary(best.model)
 ```
 
@@ -98,6 +92,8 @@ summary(best.model)
 anova(fullup,best.model)
 ```
 # Bream
+
+## Results
 
 
 ```{r}
@@ -107,9 +103,7 @@ Breamdata =filter(Fishdata, Species =="Bream")
 
 This R command breaks Bream apart from Fishdata and creates another subset. There are 35 observations of Bream and 6 variables. These are the same previous variables.
 
-### Graphical Descriptive Results
 
-<!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 ```{r}
 library(leaps)
@@ -148,6 +142,7 @@ This summary clarifies which variables are included in the best model for onlt 2
 
 ```{r}
 best.model <- lm(Weight~Length2+Height ,data=Breamdata)
+fullup <- lm(Weight~.,data=Breamdata)
 summary(best.model)
 ```
 
@@ -159,15 +154,7 @@ anova(fullup,best.model)
 # Smelt
 
 
-## Methods
-
-<!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method.!-->
-
-#Results
-
-<!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
-
-
+## Results
 
 ```{r}
 Smeltdata =filter(Fishdata, Species =="Smelt")
@@ -176,9 +163,7 @@ Smeltdata =filter(Fishdata, Species =="Smelt")
 
 This R command breaks Smelt apart from Fishdata and creates another subset. There are only 14 observations of Bream and 6 variables. These are the same previous variables.
 
-### Graphical Descriptive Results
 
-<!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 ```{r}
 library(leaps)
@@ -217,35 +202,12 @@ This is a summary that clarifies what two variables make up the best model with 
 
 ```{r}
 best.model <- lm(Weight~Length2+Width ,data=Smeltdata)
+fullup <- lm(Weight~.,data=Smeltdata)
 summary(best.model)
 ```
-## Methods
-
-<!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method.!-->
-
-#Results
-
-<!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
-
-## Descriptive Results
-
-### Graphical Descriptive Results
-
-<!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
-
-### Numerical Descriptive Results
-
-<!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
-
-## Inferential Results
-
-<!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
 
 
 # Discussion and Conclusion
-
-<!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
-
 
 
 
