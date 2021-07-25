@@ -21,8 +21,14 @@ Fishdata <- read.csv(file = "Fish.csv")
 
 <!--In this section you explain what you are trying to show.  Where did the data come from?  What is the research or other question you are trying to answer?!-->
 
-## Build the best regression model you can that predicts the weight of perch
-## Using only two predictor variables  
+## Build the best regression model you can that predicts the weight of perch, Bream, and Smelt.
+## Using only two predictor variables
+
+
+# Methods
+
+First the data needed to be read opened from the csv file. The appropriate r command was used to achive this and was title Fishdata. Fishdata includes 6 variables total. These variables are Weight, Lenghth1, Lenghth2, Lenghth3, Height, and Weight. This project is trying to find out what two variables best describe weight in 3 species of fish. Perch, Bream, and Smelt are the three species.
+Fishdata also includes the character variable species and that needs to be removed to effectively read the data. Appropriate R commands are used to extract the numerical variables from the character variable "species" for each  of the three types of fish. 
 
 # Perch
 
@@ -30,6 +36,9 @@ Fishdata <- read.csv(file = "Fish.csv")
 perch <- filter(Fishdata,Species == "Perch")
 perch <- select(perch,-1)
 ``` 
+
+This R command breaks perch apart from Fishdata and creates another subset. There are 56 observations of perch and 6 variables. These are the same previous variables.
+
 
 ```{r}
 library(leaps)
@@ -48,7 +57,11 @@ subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2
 ```
 
 
-in this model, model perch, it appears that the best two plots to use to find the weight is Height and Width.
+This model includes 5 regression models that have varying variables in each and explain the perch fish weight. The numbers of variables in each model range from 1 to 5 and the most effective model will be seen at the top, while the lowest will be seen at the bottom. 
+
+The two best elemental regression models to explain what the fish's weight is appears to be Height and Width. This model is also the best possible model as it can be seen at the highest location on this plot. The adjusted R-squared is around 0.94.
+
+The best model with two regressors is model 2, as is illustated in this plot. 
 
 
 
@@ -57,7 +70,7 @@ which.max(summary.out$adjr2)
 ```
 
 
-The best model of all of them is model 2.
+The best model of all of them is model 2. The best 
 
 
 ```{r}
@@ -87,7 +100,9 @@ library(car)
 subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2")
 ```
 
-The best two variables to use is W
+
+This is the model for Bream and there are 35 bream. You can see them listed in the environments pane. There are only 14 Smelt.
+According to this model, The best two regressors to use are Length 2 and Height. 
 
 
 ```{r}
@@ -102,3 +117,44 @@ summary.out$which[2,]
 ```
 
 The summary shows that the best variables to use is Length 2 and Height.
+
+
+```{r}
+Smelt <- filter(Fishdata,Species == "Smelt")
+Smelt <- select(Smelt,-1)
+``` 
+
+```{r}
+library(leaps)
+regsubsets.out <-
+    regsubsets(Weight ~ .,
+               data = Smelt,
+               nbest = 1,       # 1 best model for each number of predictors
+               nvmax = NULL,    # NULL for no limit on number of variables
+               force.in = NULL, force.out = NULL,
+               method = "exhaustive")
+
+summary.out <- summary(regsubsets.out)
+as.data.frame(summary.out$outmat)
+library(car)
+subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2")
+```
+
+The best two variables is Length 2 and Width. 
+
+
+
+
+```{r}
+which.max(summary.out$adjr2)
+```
+
+The best model is
+
+
+```{r}
+summary.out$which[2,]
+```
+
+
+
